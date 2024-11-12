@@ -1,101 +1,70 @@
-import Image from "next/image";
+"use client"
+import { useState, useEffect } from "react"
+// react icons
+import { IoMdArrowDropupCircle } from "react-icons/io";
+import { IoMdArrowDropdownCircle } from "react-icons/io";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const API_KEY = "c2e9e86d85c918c3344d7b64d938d8c3";
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [data, setData] = useState<any>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    fetch(`http://api.coinlayer.com/live?access_key=${API_KEY}`)
+      .then((response) => response.json())
+      .then((jsonConverted) => {
+        console.log("JSON Converted Data : ", jsonConverted);
+        setData(jsonConverted);
+      });
+  }, []);
+
+    // const [data, setData] = useState<any>([]);
+
+    // useEffect(async () => {
+    //     let apidata = await fetch("https://api.coinlayer.com/live?1ba013220468f0efb7f8c56f01b74492");
+    //     apidata = await data.json();
+    //     console.log(apidata);
+    //     setData(apidata)
+    // }, [])
+    
+  return (
+    <div className="home-page">
+      <div className="upper-box slide-in-top">
+        <div className="up-text-1">
+          <div><h1 className="d-h1">Crypto Dashboard</h1><p>Hi, Dawood take a look at today market</p></div>
+          <div><h3>Total Profit</h3><p>12 November 2024</p></div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="list">
+          <div className="innerlist"><h4>BTC:</h4> <p>{data?.rates?.BTC}$</p> <p className="percen">{Math.ceil(data?.rates?.BTC)}%</p> </div>
+          <div className="innerlist"><h4>BNB:</h4> <p>{data?.rates?.BNB}$</p> <p className="percen">{Math.ceil(data?.rates?.BNB)}%</p> </div>
+          <div className="innerlist"><h4>ETH:</h4> <p>{data?.rates?.ETH}$</p> <p className="percen">{Math.ceil(data?.rates?.ETH)}%</p> </div>
+          <div className="innerlist"><h4>DOGE:</h4> <p>{data?.rates?.DOGE}$</p> <p className="percen-red">{Math.ceil(data?.rates?.DOGE)}%</p> </div>
+          <div className="innerlist"><h4>ACT:</h4> <p>{data?.rates?.ACT}$</p> <p className="percen-red">{Math.ceil(data?.rates?.ACT)}%</p> </div>
+          <div className="innerlist"><h4>DASH:</h4> <p>{data?.rates?.DASH}$</p> <p className="percen-red">{Math.ceil(data?.rates?.DASH)}%</p> </div>
+          <div className="innerlist"><h4>SOL:</h4> <p>{data?.rates?.SOL}$</p> <p className="percen-yellow">{Math.ceil(data?.rates?.SOL)}%</p> </div>
+        </div>
+      </div>
+      <div className="lower-box">
+        <div className="col-1 slide-in-blurred-bottom">
+          <span>current</span>
+          <h1>Bitcoin Price</h1>
+          <div className="price"><IoMdArrowDropupCircle className="arrow-icon"/>
+          {data?.rates?.BTC}$</div>
+        </div>
+        <div className="col-2 slide-in-blurred-bottom">
+        <span>current</span>
+          <h1>Ethereum Price</h1>
+          <div className="price"><IoMdArrowDropupCircle className="arrow-icon"/>
+          {data?.rates?.ETH}$</div>
+        </div>
+        <div className="col-3 slide-in-blurred-bottom">
+        <span>current</span>
+          <h1>Dogecoin Price</h1>
+          <div className="price"><IoMdArrowDropdownCircle className="arrow-icon"/>
+          {data?.rates?.DOGE}$</div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
